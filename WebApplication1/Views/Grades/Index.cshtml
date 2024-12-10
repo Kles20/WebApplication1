@@ -1,0 +1,98 @@
+﻿@model List<WebApplication1.Controllers.Subject>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Oceny Studenta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 5px;
+            margin-right: 10px;
+            width: 200px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <h1>Oceny Studenta</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Przedmiot</th>
+                <th>Oceny</th>
+                <th>Średnia</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var subject in Model)
+            {
+                <tr>
+                    <td>@subject.Name</td>
+                    <td>@string.Join(", ", subject.Grades)</td>
+                    <td>@subject.Average.ToString("0.00")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="form-container">
+        <h2>Dodaj Ocenę</h2>
+        <form asp-action="AddGrade" method="post">
+            <label for="subjectName">Przedmiot:</label>
+            <select id="subjectName" name="subjectName">
+                @foreach (var subject in Model)
+                {
+                    <option value="@subject.Name">@subject.Name</option>
+                }
+            </select>
+            <input type="number" name="grade" min="1" max="6" step="0.5" placeholder="Ocena (1-6)" required />
+            <button type="submit">Dodaj</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h2>Dodaj Nowy Przedmiot</h2>
+        <form asp-action="AddSubject" method="post">
+            <input type="text" name="newSubjectName" placeholder="Nazwa Przedmiotu" required />
+            <button type="submit">Dodaj</button>
+        </form>
+    </div>
+</body>
+</html>
