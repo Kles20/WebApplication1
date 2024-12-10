@@ -1,0 +1,123 @@
+﻿@model WebApplication1.Models.CalendarViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kalendarz Studenta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: auto; /* Umożliwia przewijanie zawartości */
+        }
+
+        .calendar-container {
+            width: 90%; /* Zwiększa szerokość kalendarza */
+            max-width: 1200px; /* Ogranicza maksymalną szerokość */
+            margin: 20px auto;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed; /* Zapewnia stałą szerokość kolumn */
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 15px; /* Zwiększa padding */
+            vertical-align: top;
+            word-wrap: break-word;
+            overflow: hidden; /* Zapobiega rozciąganiu kolumn */
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-size: 1.1em; /* Zwiększa rozmiar czcionki nagłówków */
+        }
+
+        td {
+            min-width: 120px; /* Ustawia minimalną szerokość dla kolumn */
+            height: 150px; /* Ustawia wysokość komórek */
+            position: relative;
+            vertical-align: top;
+        }
+
+        .event {
+            font-size: 1.0em; /* Zmniejsza rozmiar czcionki */
+            color: #007bff;
+            margin: 2px 0;
+            display: block; /* Umożliwia lepsze wyświetlanie wydarzeń */
+            overflow: hidden; /* Ukrywa przepełniony tekst */
+            text-overflow: ellipsis; 
+            white-space: break-spaces; /* Zapobiega zawijaniu tekstu */
+        }
+        }
+
+        h1 {
+            text-align: center;
+            width: 100%;
+            margin: 20px 0;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kalendarz Studenta - @DateTime.Now.ToString("MMMM yyyy")</h1>
+    <div class="calendar-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Pon</th>
+                    <th>Wt</th>
+                    <th>Śr</th>
+                    <th>Czw</th>
+                    <th>Pt</th>
+                    <th>Sob</th>
+                    <th>Ndz</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var week in Model.Days)
+                {
+                    <tr>
+                        @foreach (var day in week)
+                        {
+                            if (day == null)
+                            {
+                                <td></td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <strong>@day.Date.Day</strong>
+                                    @if (day.Events != null && day.Events.Any())
+                                    {
+                                        <ul>
+                                            @foreach (var evt in day.Events)
+                                            {
+                                                <li class="event">@evt</li>
+                                            }
+                                        </ul>
+                                    }
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
